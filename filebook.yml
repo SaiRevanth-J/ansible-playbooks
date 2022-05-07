@@ -1,0 +1,18 @@
+--- # File playbook for file create ,directory create ,copy file from server to dest 
+- hosts: webserver
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: create file in host
+      file: path=/home/ansible/pora state=touch
+        # file created 
+    - name: create directory
+      file: path=/home/ansible/kick state=directory    
+        # directory created
+    - name: install httpd s/w
+      yum: name=httpd state=latest
+        # s/w installed
+    - name: coping file 
+      copy: src=/home/ansible/file22 dest=/tmp/
+        # copyied file to dest    

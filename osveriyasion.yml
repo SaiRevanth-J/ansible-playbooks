@@ -1,0 +1,13 @@
+--- # os diff webserver s/w install playbook
+- hosts: webserver
+  user: ansible
+  become: true
+  connection: ssh
+  tasks:
+    - name: os apache2 ntallation  
+      action: apt-get name=apache2 state=installed
+      when: ansible_os_family == "Debian"
+
+    - name: os httpd intallation
+      yum: name=httpd state=installed
+      when: ansible_os_family == "RedHat"    

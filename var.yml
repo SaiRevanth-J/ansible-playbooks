@@ -1,0 +1,24 @@
+--- # variable alias vars and handlers  playbook
+- hosts: webserver
+  user: ansible
+  become: true
+  connection: ssh
+  vars:
+        pkgname: httpd
+  tasks:
+       - name: intall httpd #task1 
+         yum: name='{{pkgname}}' state=present
+         notify: start httpd service
+           #handler 1 is linked to task1
+       - name: created mutiple users  
+         user: name='{{item}}' state=present
+         with_items:
+           - king
+           - queen
+           - minister
+           - solider 
+          
+  handlers:
+       - name: start httpd service #handler 1
+         service: name=httpd state=started
+       -     

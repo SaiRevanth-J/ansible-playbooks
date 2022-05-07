@@ -1,0 +1,13 @@
+--- # user deletion  playbook
+- hosts: webserver
+  user: ansible
+  become: true
+  connection: ssh
+  vars:
+        pkgname: httpd
+  tasks:
+       
+       - user:
+             name: king 
+             state: absent
+             remove: true 

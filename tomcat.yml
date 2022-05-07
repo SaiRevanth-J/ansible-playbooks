@@ -1,0 +1,47 @@
+--- # tomcat installatoin 
+- hosts: webserver[0]
+  user: ansible
+  become: yes 
+  tasks:
+    - name: install java file redhat
+      yum:
+            name: java
+            state: present
+      when: ansible_os_family == 'RedHat'
+    - name: install default-jdk in debian
+      yum:
+            name: default-jdk
+            state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Download tomcat pkg
+      get_url:
+            url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.62/bin/apache-tomcat-9.0.62.tar.gz
+            dest: /opt 
+    - name: unzip the tomcat
+      unarchive:
+            src: /opt/apache-tomcat-9.0.62.tar.gz
+            dest: /opt
+            remote_src: true   
+    - name: change permissions to execute tomcat 
+      file: 
+            path: /opt/apache-tomcat-9.0.62/bin/startup.sh
+            mode: 0777
+
+    - name: Run tomcat service
+      shell: nohup ./startup.sh
+      args:
+            chdir: /opt/apache-tomcat-9.0.62/bin
+    - name: change permissions to execute tomcat
+      file:
+            path: /opt/apache-tomcat-9.0.62/bin/shutdown.sh
+            mode: 0777
+           
+    - name: stop tomcat service
+      shell: nohup ./shutdown.sh
+      args:
+            chdir: /opt/apache-tomcat-9.0.62/bin
+
+              
+           
+        
